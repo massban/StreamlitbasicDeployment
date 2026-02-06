@@ -1,0 +1,4 @@
+naive-bayes-algo.py
+requirements.txt
+model.joblib
+tfidf.joblib
