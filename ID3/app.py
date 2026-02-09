@@ -18,6 +18,9 @@ data = pd.DataFrame({
                     "Yes","No"]
 })
 
+st.subheader("📊 Training Dataset")
+st.dataframe(data, use_container_width=True)
+
 def entropy(col):
     _, counts = np.unique(col, return_counts=True)
     return -sum((c/len(col))*math.log2(c/len(col)) for c in counts)
@@ -50,11 +53,22 @@ def predict(tree, sample):
 if st.button("Generate Decision Tree"):
     tree = id3(data, "PlayTennis", ["Outlook","Humidity"])
     st.session_state.tree = tree
+    st.subheader("🌲 Generated Decision Tree")
     st.json(tree)
 
 if "tree" in st.session_state:
-    st.subheader("Prediction")
+    st.subheader("🔮 Prediction")
     o = st.selectbox("Outlook", data["Outlook"].unique())
     h = st.selectbox("Humidity", data["Humidity"].unique())
+
     if st.button("Predict"):
-        st.success(f"PlayTennis: {predict(st.session_state.tree, {'Outlook':o,'Humidity':h})}")
+        result = predict(st.session_state.tree, {"Outlook": o, "Humidity": h})
+
+        result_df = pd.DataFrame({
+            "Outlook": [o],
+            "Humidity": [h],
+            "PlayTennis": [result]
+        })
+
+        st.table(result_df)
+        st.success(f"Prediction Result: {result}")
