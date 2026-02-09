@@ -5,11 +5,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 
-st.title("Titanic Survival Prediction")
+st.set_page_config(page_title="Titanic Survival", layout="centered")
+st.title("🚢 Titanic Survival Prediction")
 
 file = st.file_uploader("Upload Titanic CSV", type="csv")
 if file:
     df = pd.read_csv(file)
+
     df["Age"].fillna(df["Age"].median(), inplace=True)
     df["Fare"].fillna(df["Fare"].median(), inplace=True)
     df.dropna(subset=["Embarked"], inplace=True)
@@ -32,4 +34,4 @@ if file:
     model.fit(X_train, y_train)
     pred = model.predict(X_test)
 
-    st.write(f"Accuracy: {accuracy_score(y_test, pred):.2f}")
+    st.success(f"Accuracy: {accuracy_score(y_test, pred):.2f}")
