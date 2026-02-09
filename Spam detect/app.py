@@ -2,14 +2,15 @@ import streamlit as st
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import LinearSVC
 
-st.title("Spam Email Detection")
+st.set_page_config(page_title="Spam Detection", layout="centered")
+st.title("📧 Spam Email Detection")
 
 emails = [
     "Win a free iPhone",
     "Meeting tomorrow",
-    "Claim your prize",
+    "Claim your prize now",
     "Project discussion",
-    "Limited offer"
+    "Limited offer today"
 ]
 labels = [1,0,1,0,1]
 
@@ -19,7 +20,7 @@ X = vectorizer.fit_transform(emails)
 model = LinearSVC()
 model.fit(X, labels)
 
-msg = st.text_area("Enter Email")
+msg = st.text_area("Enter Email Message")
 if st.button("Check"):
     pred = model.predict(vectorizer.transform([msg]))[0]
-    st.write("Spam Email" if pred==1 else "Not Spam Email")
+    st.success("Spam Email" if pred else "Not Spam Email")
