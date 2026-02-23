@@ -8,9 +8,14 @@ from sklearn.metrics import accuracy_score
 st.set_page_config(page_title="Titanic Survival", layout="centered")
 st.title("🚢 Titanic Survival Prediction")
 
-file = st.file_uploader("Upload Titanic CSV", type="csv")
-if file:
-    df = pd.read_csv(file)
+file = st.file_uploader("Upload Titanic File", type=["csv", "xlsx"])
+
+if file is not None:
+    # Detect file type
+    if file.name.endswith(".csv"):
+        df = pd.read_csv(file)
+    else:
+        df = pd.read_excel(file)
 
     df["Age"].fillna(df["Age"].median(), inplace=True)
     df["Fare"].fillna(df["Fare"].median(), inplace=True)
